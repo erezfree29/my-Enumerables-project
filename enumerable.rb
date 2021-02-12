@@ -2,11 +2,13 @@
 
 module Enumerable
   def my_each
-    (0..length - 1).each do |i|
-      item = self[i]
-      yield(item)
-    end
-    self
+    # If no block is given, an enumerator is returned instead.
+    return to_enum unless block_given?
+
+    array = to_a
+    # yield the item itself and its index
+    array.length.times { |index| yield(array[index]) }
+    array
   end
 
   def my_each_with_index
@@ -132,8 +134,20 @@ module Enumerable
     end
     true
   end
-end
 
+  def my_inject(init = nil, _sym = nil)
+
+    my_each do |item|
+      init = if init.nil?
+               item #in case the initial value is nil then assign first item to it
+             else
+               #in case the initial value is (not) nil then assign the result of yield to it
+               yield(init, item) 
+             end
+    end
+    init
+  end
+end
 # my_each_with_index
 # hash = Hash.new
 # %w(cat dog wombat).my_each_with_index { |item, index|
@@ -192,3 +206,5 @@ end
 # print (1..4).my_map { |i| i*i }      #=> [1, 4, 9, 16]
 # puts ""
 # print (1..4).my_map { "cat"  }   #=> ["cat", "cat", "cat", "cat"]
+
+print(5..10).my_inject { |sum, n| sum + n }            #=> 45
