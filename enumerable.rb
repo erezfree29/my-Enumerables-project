@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Enumerable
   def my_each
     # If no block is given, an enumerator is returned instead.
@@ -71,9 +69,7 @@ module Enumerable
       condition = obj
       (0..length - 1).each do |i|
         if obj.instance_of?(Regexp)
-          return obj.match? self[i]
-        elsif self[i].is_a? condition
-          return true
+          return obj.match? self[i] if obj.instance_of?(Regexp)
         end
       end
     end
@@ -98,8 +94,7 @@ module Enumerable
       (0..length - 1).each do |i|
         count += 1 if self[i] == find
       end
-    else
-      return length
+      return length unless !obj.nil?
     end
 
     (0..length - 1).each do |i|
