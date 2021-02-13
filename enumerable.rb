@@ -66,7 +66,6 @@ module Enumerable
   def my_any?(obj = nil)
     # if an object is given
     unless obj.nil?
-      condition = obj
       (0..length - 1).each do |i|
         if obj.instance_of?(Regexp)
           return obj.match? self[i] if obj.instance_of?(Regexp)
@@ -89,12 +88,12 @@ module Enumerable
   def my_count(obj = nil)
     count = 0
     # if object is given
-    if !obj.nil?
+    unless obj.nil?
       find = obj
       (0..length - 1).each do |i|
         count += 1 if self[i] == find
       end
-      return length unless !obj.nil?
+    return length if obj.nil?
     end
 
     (0..length - 1).each do |i|
