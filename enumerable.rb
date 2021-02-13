@@ -135,19 +135,46 @@ module Enumerable
     true
   end
 
-  def my_inject(init = nil, _sym = nil)
-
-    my_each do |item|
-      init = if init.nil?
-               item #in case the initial value is nil then assign first item to it
-             else
-               #in case the initial value is (not) nil then assign the result of yield to it
-               yield(init, item) 
-             end
+  def my_inject(initial = nil, operator = nil)
+    # initial is accumulator
+    # if there is a block
+    if !block_given?
+      if operator.nil?
+        # the operator passed with no initial value but the first value is initial so we assign initial to operator
+        operator = initial
+        operator.to_sym # convert it to symbol
+        initial = nil # make initial value null
+      end
+      my_each do |obj|
+        if initial.nil?
+          initial = obj
+        else
+          # send sends a message to an object instance and its ancestors in class hierarchy until some method reacts (because its name matches the first argument).
+          # 1.send ('+', 2)       # 1.+(2)        # 1 + 2
+          initial = initial.send(operator, obj)
+        end
+      end
+    # if there is no block
+    else
+      my_each do |item|
+        initial =
+          if initial.nil?
+            item # in case the initial value is nil then assign first item to it
+          else
+            # in case the initial value is (not) nil then assign the result of yield to it
+            yield(initial, item)
+          end
+      end
+      initial
     end
-    init
+    initial
   end
 end
+
+def multiply_els(obj)
+  obj.my_inject(1, :*)
+end
+
 # my_each_with_index
 # hash = Hash.new
 # %w(cat dog wombat).my_each_with_index { |item, index|
@@ -186,16 +213,6 @@ end
 # puts [nil, false].my_none?                                 #=> true
 # puts [nil, false, true].my_none?                          #=> false
 
-# my_none?
-# puts %w{ant bear cat}.my_none? { |word| word.length == 5 } #=> true
-# puts %w{ant bear cat}.my_none? { |word| word.length >= 4 } #=> false
-# puts %w{ant bear cat}.my_none?(/d/)                        #=> true
-# puts [1, 3.14, 42].my_none?(Float)                         #=> false
-# puts [].my_none?                                           #=> true
-# puts [nil].my_none?                                        #=> true
-# puts [nil, false].my_none?                                 #=> true
-# puts [nil, false, true].my_none?                           #=> false
-
 # my_count
 #  ary = [1, 2, 4, 2]
 # puts ary.my_count               #=> 4
@@ -206,5 +223,13 @@ end
 # print (1..4).my_map { |i| i*i }      #=> [1, 4, 9, 16]
 # puts ""
 # print (1..4).my_map { "cat"  }   #=> ["cat", "cat", "cat", "cat"]
-
-print(5..10).my_inject { |sum, n| sum + n }            #=> 45
+# my_inject
+# puts (5..10).my_inject { |sum, n| sum + n }            #=> 45
+# puts (5..10).my_inject(:+)                             #=> 45
+# puts (5..10).my_inject(1, :*)                          #=> 151200
+# puts (5..10).my_inject(1) { |product, n| product * n } #=> 151200
+# longest = %w{ cat sheep bear }.my_inject {|memo, word|
+#   memo.length > word.length ? memo : word}
+# puts longest                                        #=> "sheep"
+# multiply_els
+# puts multiply_els([2,4,5]) #=> 40
