@@ -37,7 +37,7 @@ module Enumerable
       condition = obj
       (0..length - 1).each do |i|
         if obj.instance_of?(Regexp)
-          return false if (obj === self[i]) == false
+          return false if (obj.match? self[i]) == false
         elsif !self[i].is_a? condition
           return false
         end
@@ -71,7 +71,7 @@ module Enumerable
       condition = obj
       (0..length - 1).each do |i|
         if obj.instance_of?(Regexp)
-          return obj === self[i]
+          return obj.match? self[i]
         elsif self[i].is_a? condition
           return true
         end
@@ -117,7 +117,7 @@ module Enumerable
       condition = obj
       (0..length - 1).each do |i|
         if obj.instance_of?(Regexp)
-          return false if obj === self[i]
+          return false if obj.match? self[i]
         elsif self[i].is_a? condition
           return false
         end
@@ -136,18 +136,18 @@ module Enumerable
   end
 
   def my_inject(initial = nil, operator = nil)
-    if !block_given?# if there is a block
+    if !block_given? # if there is a block
       if operator.nil?
-        operator = initial# the operator passed with no initial value, but the first value is initial so we assign initial to operator
+        operator = initial # assign the operator
         operator.to_sym # convert it to symbol
         initial = nil # make initial value null
       end
       my_each do |obj|
-        if initial.nil?
-          initial = obj
-        else
-          initial = initial.send(operator, obj)# 1.send ('+', 2)       # 1.+(2)        # 1 + 2
-        end
+        initial = if initial.nil?
+                    obj
+                  else
+                    initial.send(operator, obj) # 1.send ('+', 2)       # 1.+(2)        # 1 + 2
+                  end
       end
     # if there is no block
     else
@@ -156,7 +156,7 @@ module Enumerable
           if initial.nil?
             item # in case the initial value is nil then assign first item to it
           else
-            yield(initial, item)# in case the initial value is (not) nil then assign the result of yield to it
+            yield(initial, item) # in case the initial value is (not) nil then assign the result of yield to it
           end
       end
     end
@@ -216,7 +216,6 @@ end
 # print (1..4).my_map { |i| i*i }      #=> [1, 4, 9, 16]
 # puts ""
 # print (1..4).my_map { "cat"  }   #=> ["cat", "cat", "cat", "cat"]
-
 
 # my_inject
 # puts (5..10).my_inject { |sum, n| sum + n }            #=> 45
