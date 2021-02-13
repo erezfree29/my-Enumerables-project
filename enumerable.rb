@@ -136,12 +136,9 @@ module Enumerable
   end
 
   def my_inject(initial = nil, operator = nil)
-    # initial is accumulator
-    # if there is a block
-    if !block_given?
+    if !block_given?# if there is a block
       if operator.nil?
-        # the operator passed with no initial value but the first value is initial so we assign initial to operator
-        operator = initial
+        operator = initial# the operator passed with no initial value, but the first value is initial so we assign initial to operator
         operator.to_sym # convert it to symbol
         initial = nil # make initial value null
       end
@@ -149,9 +146,7 @@ module Enumerable
         if initial.nil?
           initial = obj
         else
-          # send sends a message to an object instance and its ancestors in class hierarchy until some method reacts (because its name matches the first argument).
-          # 1.send ('+', 2)       # 1.+(2)        # 1 + 2
-          initial = initial.send(operator, obj)
+          initial = initial.send(operator, obj)# 1.send ('+', 2)       # 1.+(2)        # 1 + 2
         end
       end
     # if there is no block
@@ -161,11 +156,9 @@ module Enumerable
           if initial.nil?
             item # in case the initial value is nil then assign first item to it
           else
-            # in case the initial value is (not) nil then assign the result of yield to it
-            yield(initial, item)
+            yield(initial, item)# in case the initial value is (not) nil then assign the result of yield to it
           end
       end
-      initial
     end
     initial
   end
@@ -223,6 +216,8 @@ end
 # print (1..4).my_map { |i| i*i }      #=> [1, 4, 9, 16]
 # puts ""
 # print (1..4).my_map { "cat"  }   #=> ["cat", "cat", "cat", "cat"]
+
+
 # my_inject
 # puts (5..10).my_inject { |sum, n| sum + n }            #=> 45
 # puts (5..10).my_inject(:+)                             #=> 45
