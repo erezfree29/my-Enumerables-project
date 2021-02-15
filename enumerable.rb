@@ -1,3 +1,4 @@
+# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 module Enumerable
   def my_each
     # If no block is given, an enumerator is returned instead.
@@ -22,11 +23,8 @@ module Enumerable
     # If no block is given, an Enumerator is returned instead.
     return to_enum unless block_given?
 
-    # Returns an array containing all elements of enum for which the given block returns a true value.
     new_array = []
     my_each { |obj| new_array << obj if yield(obj) }
-    # Push the item into the new array
-    # If the item met the block condition
     new_array
   end
 
@@ -52,17 +50,15 @@ module Enumerable
     if parameter.nil? && block_given?
       my_each { |item| return true if yield(item) == true }
       false
-    end
     # Param = 1, Block = 0
-    if !parameter.nil? && !block_given?
+    elsif !parameter.nil? && !block_given?
       my_each do |item|
         return true if parameter.instance_of?(Regexp) && item.match?(parameter) # Regexp
         return true if !parameter.instance_of?(Regexp) && (item.is_a? parameter) # Class
       end
       false
-    end
     # Param = 0, Block = 0
-    if parameter.nil? && !block_given?
+    else
       my_each { |item| return true if item == true }
       true
     end
@@ -73,84 +69,73 @@ module Enumerable
     # Param = 0, Block = 1
     if parameter.nil? && block_given?
       my_each { |item| return false if yield(item) == true }
-      true
-    end
     # Param = 1, Block = 0
-    if !parameter.nil? && !block_given?
+    elsif !parameter.nil? && !block_given?
       my_each do |item|
         return false if parameter.instance_of?(Regexp) && item.match?(parameter) # Regexp
         return false if !parameter.instance_of?(Regexp) && (item.is_a? parameter) # Class
       end
-      true
-    end
     # Param = 0, Block = 0
-    if parameter.nil? && !block_given?
+    else
       my_each { |item| return false unless [false, nil, false, nil, false, nil].include?(item) }
-      true
     end
     true
   end
 
-  # def my_map
-  #   new_array = []
-  #   my_each { |item| new_array << yield(item) }
-  #   new_array
-  # end
+  def my_count(parameter = nil)
+    # Param = 0, Block = 0
+    (return length if parameter.nil? && !block_given?)
+    # Param = 1, Block = 0
+    if !parameter.nil? && !block_given?
+      count = 0
+      my_each { |item| count += 1 if item == parameter }
+    # Param = 0, Block = 1
+    elsif parameter.nil? && block_given?
+      count = 0
+      my_each { |item| count += 1 if yield(item) }
+    end
 
-  # def my_map(block)
-  #   new_array = []
-  #   my_each { |item| new_array << block.call(item) }
-  #   new_array
-  # end
+    count
+  end
 
-  # def my_count(obj = nil)
-  #   count = self.length
-  #   # if object is given
-  #   unless obj.nil?
-  #     find = obj
-  #     (0..length - 1).each do |i|
-  #       count += 1 if self[i] == find
-  #     end
-  #     return length if obj.nil?
-  #   end
+  def my_map(proc = nil)
+    new_array = []
+    my_each do |item|
+      item = if !proc.nil?
+               proc.call(item)
+             else
+               yield(item)
+             end
+      new_array << item
+    end
+    new_array
+  end
 
-  #   (0..length - 1).each do |i|
-  #     # check if block was given
-  #     next unless defined?(yield)
+  def my_inject(initial = nil, sym = nil)
+    # Initial =1, sym=1, Block =0
+    if !initial.nil? && sym != nil & !block_given?
+      my_each { |item| initial = initial.send(operator, item) }
+    # Initial =0, sym=1, Block =0
+    elsif initial.nil? && sym != nil & !block_given?
+      sym = initial
+      sym.to_sym
+      initial = nil
+      my_each do |item|
+        initial = item if initial.nil?
+        initial = initial.send(sym, item) unless initial.nil?
+      end
 
-  #     condition = yield(self[i])
-  #     count += 1 if condition
-  #   end
-  #   count
-  # end
-
-  # def my_inject(initial = nil, operator = nil)
-  #   if !block_given? # if there is a block
-  #     if operator.nil?
-  #       operator = initial # assign the operator
-  #       operator.to_sym # convert it to symbol
-  #       initial = nil # make initial value null
-  #     end
-  #     my_each do |obj|
-  #       initial = if initial.nil?
-  #                   obj
-  #                 else
-  #                   initial.send(operator, obj) # 1.send ('+', 2)       # 1.+(2)        # 1 + 2
-  #                 end
-  #     end
-  #   # if there is no block
-  #   else
-  #     my_each do |item|
-  #       initial =
-  #         if initial.nil?
-  #           item # in case the initial value is nil then assign first item to it
-  #         else
-  #           yield(initial, item) # in case the initial value is (not) nil then assign the result of yield to it
-  #         end
-  #     end
-  #   end
-  #   initial
-  # end
+    # Initial =1, sym=0, Block =1
+    elsif !initial.nil? && sym == nil & block_given?
+      my_each { |item| initial = yield(initial, item) }
+    # Initial =0, sym=0, Block =1
+    elsif initial.nil? && sym == nil & block_given?
+      my_each do |item|
+        initial = item if initial.nil?
+        initial = yield(initial, item) unless initial.nil?
+      end
+    end
+  end
 end
 
 # def multiply_els(obj)
@@ -203,9 +188,12 @@ end
 # puts ary.my_count{ |x| x%2==0 } #=> 3
 
 # my_map
-# print (1..4).my_map { |i| i*i }      #=> [1, 4, 9, 16]
-# puts ""
-# print (1..4).my_map { "cat"  }   #=> ["cat", "cat", "cat", "cat"]
+# print(1..4).my_map { |i| i * i } #=> [1, 4, 9, 16]
+# puts ''
+# print(1..4).my_map { 'cat' } #=> ["cat", "cat", "cat", "cat"]
+# proc1 = proc { |x| x**2 }
+# puts ''
+# print (1..4).my_map(proc1) #=> [1,4,9,16]
 
 # my_inject
 # puts (5..10).my_inject { |sum, n| sum + n }            #=> 45
@@ -217,3 +205,5 @@ end
 # puts longest                                        #=> "sheep"
 # multiply_els
 # puts multiply_els([2,4,5]) #=> 40
+
+# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
