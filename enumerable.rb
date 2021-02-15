@@ -39,15 +39,14 @@ module Enumerable
       true
     end
     # Param = 1, Block = 0
-    if !parameter.nil? && !block_given?
+    elsif !parameter.nil? && !block_given?
       my_each do |item|
         return false if parameter.instance_of?(Regexp) && !item.match?(parameter) # Regexp
         return false if !parameter.instance_of?(Regexp) && !(item.is_a? parameter) # Class
       end
       true
-    end
     # Param = 0, Block = 0
-    if parameter.nil? && !block_given?
+    else
       my_each { |item| return false if [false, nil].include?(item) }
       true
     end
