@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Enumerable
   def my_each
     # If no block is given, an enumerator is returned instead.
@@ -36,19 +34,15 @@ module Enumerable
     # Param = 0, Block = 1
     if parameter.nil? && block_given?
       my_each { |item| return false if yield(item) == false }
-      true
-    end
     # Param = 1, Block = 0
     elsif !parameter.nil? && !block_given?
       my_each do |item|
         return false if parameter.instance_of?(Regexp) && !item.match?(parameter) # Regexp
         return false if !parameter.instance_of?(Regexp) && !(item.is_a? parameter) # Class
       end
-      true
     # Param = 0, Block = 0
     else
       my_each { |item| return false if [false, nil].include?(item) }
-      true
     end
     true
   end
@@ -97,15 +91,17 @@ module Enumerable
     true
   end
 
-  def my_map
-    new_array = []
-    array = to_a
-    (0..array.length - 1).each do |i|
-      item = yield(array[i], i)
-      new_array << item
-    end
-    new_array
-  end
+  # def my_map
+  #   new_array = []
+  #   my_each { |item| new_array << yield(item) }
+  #   new_array
+  # end
+
+  # def my_map(block)
+  #   new_array = []
+  #   my_each { |item| new_array << block.call(item) }
+  #   new_array
+  # end
 
   # def my_count(obj = nil)
   #   count = self.length
