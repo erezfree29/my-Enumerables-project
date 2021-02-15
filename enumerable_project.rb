@@ -53,15 +53,29 @@ module Enumerable
       true
     end
   
-    def my_map
+
+    def old_my_map
       new_array = []
       array = to_a
       (0..array.length - 1).each do |i|
-        item = yield(array[i], i)
+        item = yield(array[i])
+        new_array << item
+      end
+      new_array
+    end 
+
+
+
+    def my_map(block)
+      new_array = []
+      array = to_a
+      (0..array.length - 1).each do |i|
+        item = block.call(array[i])
         new_array << item
       end
       new_array
     end
+  
   
     def my_any?(obj = nil)
       # if an object is given
@@ -110,7 +124,7 @@ module Enumerable
       count
     end
   
-    def my_none?(obj = nil)
+    def my_none?()
       unless obj.nil?
         condition = obj
         (0..length - 1).each do |i|
@@ -188,8 +202,7 @@ module Enumerable
   # puts ary.my_count(2)            #=> 2
   # puts ary.my_count{ |x| x%2==0 } #=> 3
   
-  # my_map
-  # print (1..4).my_map { |i| i*i }      #=> [1, 4, 9, 16]
+  proc1 = Proc.new {|x| x**2 }
+  print (1..4).my_map(proc1)     #=> [1, 4, 9, 16]
   # puts ""
   # print (1..4).my_map { "cat"  }   #=> ["cat", "cat", "cat", "cat"]
-  
