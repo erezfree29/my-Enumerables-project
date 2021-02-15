@@ -1,4 +1,4 @@
-# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/ModuleLength
 module Enumerable
   def my_each
     # If no block is given, an enumerator is returned instead.
@@ -206,4 +206,4 @@ end
 # multiply_els
 # puts multiply_els([2,4,5]) #=> 40
 
-# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity,  Metrics/ModuleLength
