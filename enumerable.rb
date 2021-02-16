@@ -137,11 +137,11 @@ module Enumerable
     end
   end
 end
-
- def multiply_els(obj)
-   obj.my_inject(1, :*)
- end
-
+    
+def multiply_els(obj)
+  obj.my_inject(1, :*)
+end
+    
 # Tests
 # my_each_with_index
 # hash = Hash.new
