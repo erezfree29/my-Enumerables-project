@@ -138,9 +138,9 @@ module Enumerable
   end
 end
 
-# def multiply_els(obj)
-#   obj.my_inject(1, :*)
-# end
+ def multiply_els(obj)
+   obj.my_inject(1, :*)
+ end
 
 # Tests
 # my_each_with_index
