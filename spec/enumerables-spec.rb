@@ -40,5 +40,16 @@ describe Enumerable do
     expect(hash).to eql({["dog", "jhony"]=>0, ["cat", "zelda"]=>1, ["cow", "bila"]=>2})
  end
   end
+  describe 'test the my_select method' do
+    it 'returns enum if block is not given' do
+      expect([1,2,3,4].my_select.instance_of?(Enumerator)).to be true 
+    end
+    it 'returns an array  that meets the condition when self is an array and block is given' do
+      expect([1,2,3,4].my_select { |i|  i % 3 == 0 }).to eql([3])  
+    end
+    it 'returns an array  that meets the condition when self is a range and block is given' do
+    expect((1..4).my_select { |i|  i % 3 == 0 }).to eql([3])  
+    end
+  end
 end
 
