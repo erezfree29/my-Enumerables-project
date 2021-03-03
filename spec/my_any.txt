@@ -1,0 +1,32 @@
+ describe 'test the my_any method' do
+    it 'if parameter is not given and  a block is given it returns true if any meet the condition' do
+      expect(%w[ant bear cat].my_any? { |word| word.length >= 4 }).to be true 
+    end
+    it 'if parameter is not given and  a block is given it returns false if none meet the condition' do
+      expect(%w[ant bear cat].my_any? { |word| word.length >= 5 }).to be false 
+    end
+    it 'if a parameter is a Regexp and a block is not given it returns true if any of the  values include it' do
+      expect(%w[dog fish cat].my_any?(/t/)).to be true 
+    end
+    it 'if a parameter is a Regexp and a block is not given it returns flase if none of the values include it' do
+      expect(%w[dog fish donkey].my_any?(/t/)).to be false 
+    end
+    it 'if a parameter is a class  and a block is not given it returns true if any of the values are instances of this class' do
+      expect(["house", "spain", 3.14].my_any?(Numeric)).to be true
+    end
+    it 'if a parameter is a class  and a block is not given it returns false if none of the values are instances of this class' do
+      expect(["eight", "nine", "dog"].my_any?(Numeric)).to be false
+    end
+    it 'if a parameter is a value  and a block is not given it returns true if any of the values include it' do
+      expect(["dog","fish","bear"].my_any?("bear")).to be true
+    end
+    it 'if a parameter is a value  and a block is not given it returns false if none of the values include it' do
+      expect(["dog","fish","cow"].my_any?("bear")).to be false
+    end
+    it 'if no parameter and block are given it returns true if no value is nil or false' do
+      expect(["cow"].my_all?  ).to be true
+    end
+    it 'if no parameter and block are given it returns false if any value is nil or false' do
+      expect( [nil, true, 99].my_all?).to be false
+    end
+  end
