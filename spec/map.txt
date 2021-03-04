@@ -1,0 +1,20 @@
+ let(:proc1) {  proc { |x| x**2 } }
+  describe 'test the my_map method' do
+    it 'return enum if block is not given' do
+      expect([1,2,3,4].my_map.instance_of?(Enumerator)).to be true 
+    end
+    it 'iterates over a given array and returns a new array with instances that meet the condition' do
+      expect([1,2,3,4].my_map { |i| i * i }).to eql( [1, 4, 9, 16]) 
+    end
+    it 'iterates over a given range and returns a new array with instances that meet the condition' do
+      expect((1..4).my_map { |i| i * i }).to eql( [1, 4, 9, 16]) 
+    end
+    it 'iterates over a proc and returns an array that meets the condition in the proc' do
+      expect((1..4).my_map(proc1)).to eql( [1, 4, 9, 16]) 
+    end
+  end
+  describe 'test the my_inject method' do
+    it 'return enum if block is not given' do
+      expect([1,2,3,4].my_map.instance_of?(Enumerator)).to be true 
+    end
+  end
