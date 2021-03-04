@@ -40,13 +40,13 @@ To get a local copy up and running follow these simple example steps.
 
 ## Authors
 
-👤 **Author1**
+👤 **Makungong Collins Tatang**
 
-- GitHub: [@Bishoy-Samwel](https://github.com/Bishoy-Samwel)
-- LinkedIn: [Bishoy Samwel](https://www.linkedin.com/in/bishoy-samwuel-ss/)
-- Twitter: [@bisho](https://twitter.com/BishoFaheem15)
+- GitHub: [@CollinsTatang](https://github.com/CollinsTatang)
+- Twitter: [@CollinsTatang1](https://twitter.com/CollinsTatang1)
+- LinkedIn: [makungong-collins](https://www.linkedin.com/in/makungong-collins-b43260190/)
 
-👤 **Author2**
+👤 **Erez Friemagor**
 
 - GitHub: [@Erez Friemago](https://github.com/erezfree29)
 - Twitter: [@Erez Friemago](https://twitter.com/friemagor )
