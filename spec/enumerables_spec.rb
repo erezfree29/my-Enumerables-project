@@ -115,20 +115,6 @@ describe Enumerable do
       expect([nil, true, 99].my_any?).to be true
     end
   end
-<<<<<<< HEAD
-  end
-end
-
-# my_any?
-# puts %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
-# puts %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> true
-# puts %w[ant bear cat].my_any?(/d/)                        #=> false
-# puts [nil, true, 99].my_any?(Integer)                     #=> true
-# puts [nil, true, 99].my_any?                              #=> true
-# puts [].any?                                              #=> false
-# puts ["bear","cow","pig"].my_any?("bear")  # true
-# puts ["fish","cow","pig"].my_any?("bear")  # false
-=======
   describe 'test the my_none? method' do
     it 'if parameter is not given and  a block is given it returns true if none meet the condition' do
       expect(%w[ant bear cat].my_none? { |word| word.length >= 6 }).to be true 
@@ -161,8 +147,58 @@ end
       expect( [77, 66, 99].my_none?).to be false
     end
   end
+  describe 'test the my_cout method' do
+    it 'no parameter and block are given it should return the length of an array' do
+      expect([1, 2, 4, 2].my_count).to eql(4)
+    end
+    it 'no parameter is given and a block is not given it should return the number of instances in the array' do
+      expect([1, 2, 4, 2].my_count(2)).to eql(2)
+    end
+    it 'no parameter is not given and a block given it should return the number of instances that meet the conditon' do
+      expect([1, 2, 4, 2].my_count{ |x| x%2==0}).to eql(3)
+    end
+  end
+  let(:proc1) {  proc { |x| x**2 } }
+  describe 'test the my_map method' do
+    it 'return enum if block is not given' do
+      expect([1,2,3,4].my_map.instance_of?(Enumerator)).to be true 
+    end
+    it 'iterates over a given array and returns a new array with instances that meet the condition' do
+      expect([1,2,3,4].my_map { |i| i * i }).to eql( [1, 4, 9, 16]) 
+    end
+    it 'iterates over a given range and returns a new array with instances that meet the condition' do
+      expect((1..4).my_map { |i| i * i }).to eql( [1, 4, 9, 16]) 
+    end
+    it 'iterates over a proc and returns an array that meets the condition in the proc' do
+      expect((1..4).my_map(proc1)).to eql( [1, 4, 9, 16]) 
+    end
+  end
+  describe 'test the my_inject method' do
+    it 'if an initail number and a symbol are given without a block ,it returns the sum the intial after the symbol is applied 
+    on each and every instance in a range' do
+      expect((5..10).my_inject(2, :*)).to eql(302400) 
+    end
+    it 'when a block is given without an intial it will return the total sum of the condition applied on 
+    every intances in the range' do
+      expect((1..4).my_inject { |sum, n| sum + n }).to eql(10)  
+    end
+    it 'when a block is given with an intial it will return the total sum of the condition applied on 
+    every intances in the range starting from the inital' do
+      expect((1..4).my_inject(6) { |sum, n| sum + n }).to eql(16)  
+    end
+  end
 end
 
 
 
->>>>>>> 7b44e20c287ab0df3730e2ccb68c994bd1c6de91
+# my_inject
+# puts (5..10).my_inject(1, :*) #=> 151200
+# puts (1..3).my_inject { |sum, n| sum + n } #=> 6
+# puts (1..3).my_inject(:+) #=> 6
+# puts (5..10).my_inject(1) { |product, n| product * n } #=> 151200
+# longest = %w[cat sheep bear].my_inject do |memo, word|
+#   memo.length > word.length ? memo : word
+# end
+# puts longest #=> "sheep"
+# multiply_els
+# puts multiply_els([2,4,5]) #=> 40
