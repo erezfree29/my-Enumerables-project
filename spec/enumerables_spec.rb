@@ -115,6 +115,17 @@ describe Enumerable do
       expect([nil, true, 99].my_any?).to be true
     end
   end
+  describe 'test the my_cout method' do
+    it 'no parameter and block are given it should return the length of an array' do
+      expect([1, 2, 4, 2].my_count).to eql(4)
+    end
+    it 'no parameter is given and a block is not given it should return the number of instances in the array' do
+      expect([1, 2, 4, 2].my_count(2)).to eql(2)
+    end
+    it 'no parameter is not given and a block given it should return the number of instances that meet the conditon' do
+      expect([1, 2, 4, 2].my_count{ |x| x%2==0}).to eql(3)
+    end
+  end
 end
 
 # my_any?
