@@ -45,10 +45,12 @@ describe Enumerable do
       expect([1, 2, 3, 4].my_select.instance_of?(Enumerator)).to be true
     end
     it 'returns an array  that meets the condition when self is an array and block is given' do
-      expect([1, 2, 3, 4].my_select { |i| (i % 3).zero? }).to eql([3])
+      expect([1, 2, 3, 4].my_select do |i|
+               (i % 3).zero?
+             end).to eql([3])
     end
     it 'returns an array  that meets the condition when self is a range and block is given' do
-      expect((1..4).my_select { |i| (i % 3).zero?}).to eql([3])
+      expect((1..4).my_select { |i| (i % 3).zero? }).to eql([3])
     end
   end
   describe 'test the my_all method' do
@@ -81,6 +83,17 @@ describe Enumerable do
     end
     it 'if no parameter and block are given it returns false if any value is nil or false' do
       expect([nil, true, 99].my_all?).to be false
+    end
+  end
+  describe 'test the my_cout method' do
+    it 'no parameter and block are given it should return the length of an array' do
+      expect([1, 2, 4, 2].my_count).to eql(4)
+    end
+    it 'no parameter is given and a block is not given it should return the number of instances in the array' do
+      expect([1, 2, 4, 2].my_count(2)).to eql(2)
+    end
+    it 'no parameter is not given and a block given it should return the number of instances that meet the conditon' do
+      expect([1, 2, 4, 2].my_count(&:even?)).to eql(3)
     end
   end
 end
