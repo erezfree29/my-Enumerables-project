@@ -51,7 +51,7 @@ describe Enumerable do
       expect((1..4).my_select { |i| i % 3 == 0 }).to eql([3])
     end
   end
-  describe 'test the my_all method' do
+  describe 'test the my_all? method' do
     it 'if parameter is not given and  a block is given it returns true if all meet the condition' do
       expect(%w[ant bear cat].my_all? { |word| word.length >= 3 }).to be true
     end
@@ -83,7 +83,7 @@ describe Enumerable do
       expect([nil, true, 99].my_all?).to be false
     end
   end
-  describe 'test the my_any method' do
+  describe 'test the my_any? method' do
     it 'if parameter is not given and  a block is given it returns true if any meet the condition' do
       expect(%w[ant bear cat].my_any? { |word| word.length >= 4 }).to be true
     end
@@ -115,6 +115,7 @@ describe Enumerable do
       expect([nil, true, 99].my_any?).to be true
     end
   end
+<<<<<<< HEAD
   end
 end
 
@@ -127,3 +128,41 @@ end
 # puts [].any?                                              #=> false
 # puts ["bear","cow","pig"].my_any?("bear")  # true
 # puts ["fish","cow","pig"].my_any?("bear")  # false
+=======
+  describe 'test the my_none? method' do
+    it 'if parameter is not given and  a block is given it returns true if none meet the condition' do
+      expect(%w[ant bear cat].my_none? { |word| word.length >= 6 }).to be true 
+    end
+    it 'if parameter is not given and  a block is given it returns false if any meets the condition' do
+      expect(%w[ant bear cat].my_none? { |word| word.length >= 4 }).to be false 
+    end
+    it 'if a parameter is a Regexp and a block is not given it returns true if none of the  values include it' do
+      expect(%w[dog fish donkey].my_none?(/t/)).to be true 
+    end
+    it 'if a parameter is a Regexp and a block is not given it returns flase if any of the values include it' do
+      expect(%w[dog fish cat].my_none?(/t/)).to be false 
+    end
+    it 'if a parameter is a class  and a block is not given it returns true if none of the values are instances of this class' do
+      expect(["house", "spain", "japan"].my_none?(Numeric)).to be true
+    end
+    it 'if a parameter is a class  and a block is not given it returns false if any of the values are instances of this class' do
+      expect(["eight", "nine", 1].my_none?(Numeric)).to be false
+    end
+    it 'if a parameter is a value  and a block is not given it returns true if none of the values include it' do
+      expect(["dog","fish","duck"].my_none?("bear")).to be true
+    end
+    it 'if a parameter is a value  and a block is not given it returns false if any of the values include it' do
+      expect(["dog","fish","bear"].my_none?("bear")).to be false
+    end
+    it 'if no parameter and block are given it returns false if any value is nil or false' do
+      expect(["cow",nil].my_none?).to be false
+    end
+    it 'if no parameter and block are given it returns false if none of the  values is nil or false' do
+      expect( [77, 66, 99].my_none?).to be false
+    end
+  end
+end
+
+
+
+>>>>>>> 7b44e20c287ab0df3730e2ccb68c994bd1c6de91
