@@ -36,7 +36,12 @@ To get a local copy up and running follow these simple example steps.
 - Test first file by writing: ruby bubble_sort.rb
 - Test second file by writing: ruby bubble_sort_by.rb
 
-
+## Runing the TEST instructions
+ Install
+-After installing RSpec, run gem install terminal-table  
+ Test
+-In order to run the test on the table file the user need to install the terminal-table gem on his local machine.
+-To run the tests just type rspec.
 
 ## Authors
 
