@@ -115,20 +115,6 @@ describe Enumerable do
       expect([nil, true, 99].my_any?).to be true
     end
   end
-<<<<<<< HEAD
-  end
-end
-
-# my_any?
-# puts %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
-# puts %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> true
-# puts %w[ant bear cat].my_any?(/d/)                        #=> false
-# puts [nil, true, 99].my_any?(Integer)                     #=> true
-# puts [nil, true, 99].my_any?                              #=> true
-# puts [].any?                                              #=> false
-# puts ["bear","cow","pig"].my_any?("bear")  # true
-# puts ["fish","cow","pig"].my_any?("bear")  # false
-=======
   describe 'test the my_none? method' do
     it 'if parameter is not given and  a block is given it returns true if none meet the condition' do
       expect(%w[ant bear cat].my_none? { |word| word.length >= 6 }).to be true 
@@ -165,4 +151,3 @@ end
 
 
 
->>>>>>> 7b44e20c287ab0df3730e2ccb68c994bd1c6de91
