@@ -36,7 +36,9 @@ describe Enumerable do
       expect(hash).to eql('dog' => 0, 'cat' => 1, 'cow' => 2)
     end
     it 'iterates over a given hash while retriving the index' do
-      { 'dog' => 'jhony', 'cat' => 'zelda', 'cow' => 'bila' }.my_each_with_index { |animal, index| hash[animal] = index }
+      { 'dog' => 'jhony', 'cat' => 'zelda', 'cow' => 'bila' }.my_each_with_index do |animal, index|
+        hash[animal] = index
+      end
       expect(hash).to eql(%w[dog jhony] => 0, %w[cat zelda] => 1, %w[cow bila] => 2)
     end
   end
@@ -64,10 +66,12 @@ describe Enumerable do
     it 'if a parameter is a Regexp and a block is not given it returns flase if not all values include it' do
       expect(%w[ant cow cat].my_all?(/t/)).to be false
     end
-    it 'if a parameter is a class  and a block is not given it returns true if all values are instances of this class' do
+    it 'if a parameter is a class  and a block is
+    not given it returns true if all values are instances of this class' do
       expect([1, 2, 3.14].my_all?(Numeric)).to be true
     end
-    it 'if a parameter is a class  and a block is not given it returns false if not all values are instances of this class' do
+    it 'if a parameter is a class  and a block is not given it
+    returns false if not all values are instances of this class' do
       expect([1, 'nine', 3.14].my_all?(Numeric)).to be false
     end
     it 'if a parameter is a value  and a block is not given it returns true if all values include it' do
@@ -93,13 +97,16 @@ describe Enumerable do
     it 'if a parameter is a Regexp and a block is not given it returns true if any of the  values include it' do
       expect(%w[dog fish cat].my_any?(/t/)).to be true
     end
-    it 'if a parameter is a Regexp and a block is not given it returns flase if none of the values include it' do
+    it 'if a parameter is a Regexp and a block is not given
+    it returns flase if none of the values include it' do
       expect(%w[dog fish donkey].my_any?(/t/)).to be false
     end
-    it 'if a parameter is a class  and a block is not given it returns true if any of the values are instances of this class' do
+    it 'if a parameter is a class  and a block is
+    not given it returns true if any of the values are instances of this class' do
       expect(['house', 'spain', 3.14].my_any?(Numeric)).to be true
     end
-    it 'if a parameter is a class  and a block is not given it returns false if none of the values are instances of this class' do
+    it 'if a parameter is a class  and a block is not
+    given it returns false if none of the values are instances of this class' do
       expect(%w[eight nine dog].my_any?(Numeric)).to be false
     end
     it 'if a parameter is a value  and a block is not given it returns true if any of the values include it' do
@@ -116,35 +123,40 @@ describe Enumerable do
     end
   end
   describe 'test the my_none? method' do
-    it 'if parameter is not given and  a block is given it returns true if none meet the condition' do
-      expect(%w[ant bear cat].my_none? { |word| word.length >= 6 }).to be true 
+    it 'if parameter is not given and  a block is given it returns true if none meet
+    the condition' do
+      expect(%w[ant bear cat].my_none? { |word| word.length >= 6 }).to be true
     end
     it 'if parameter is not given and  a block is given it returns false if any meets the condition' do
-      expect(%w[ant bear cat].my_none? { |word| word.length >= 4 }).to be false 
+      expect(%w[ant bear cat].my_none? { |word| word.length >= 4 }).to be false
     end
-    it 'if a parameter is a Regexp and a block is not given it returns true if none of the  values include it' do
-      expect(%w[dog fish donkey].my_none?(/t/)).to be true 
+    it 'if a parameter is a Regexp and a block is not given it
+    returns true if none of the  values include it' do
+      expect(%w[dog fish donkey].my_none?(/t/)).to be true
     end
-    it 'if a parameter is a Regexp and a block is not given it returns flase if any of the values include it' do
-      expect(%w[dog fish cat].my_none?(/t/)).to be false 
+    it 'if a parameter is a Regexp and a block is not
+    given it returns flase if any of the values include it' do
+      expect(%w[dog fish cat].my_none?(/t/)).to be false
     end
-    it 'if a parameter is a class  and a block is not given it returns true if none of the values are instances of this class' do
-      expect(["house", "spain", "japan"].my_none?(Numeric)).to be true
+    it 'if a parameter is a class  and a block is not given
+    it returns true if none of the values are instances of this class' do
+      expect(%w[house spain japan].my_none?(Numeric)).to be true
     end
-    it 'if a parameter is a class  and a block is not given it returns false if any of the values are instances of this class' do
-      expect(["eight", "nine", 1].my_none?(Numeric)).to be false
+    it 'if a parameter is a class  and a block is not given it
+    returns false if any of the values are instances of this class' do
+      expect(['eight', 'nine', 1].my_none?(Numeric)).to be false
     end
     it 'if a parameter is a value  and a block is not given it returns true if none of the values include it' do
-      expect(["dog","fish","duck"].my_none?("bear")).to be true
+      expect(%w[dog fish duck].my_none?('bear')).to be true
     end
     it 'if a parameter is a value  and a block is not given it returns false if any of the values include it' do
-      expect(["dog","fish","bear"].my_none?("bear")).to be false
+      expect(%w[dog fish bear].my_none?('bear')).to be false
     end
     it 'if no parameter and block are given it returns false if any value is nil or false' do
-      expect(["cow",nil].my_none?).to be false
+      expect(['cow', nil].my_none?).to be false
     end
     it 'if no parameter and block are given it returns false if none of the  values is nil or false' do
-      expect( [77, 66, 99].my_none?).to be false
+      expect([77, 66, 99].my_none?).to be false
     end
   end
   describe 'test the my_cout method' do
@@ -155,50 +167,37 @@ describe Enumerable do
       expect([1, 2, 4, 2].my_count(2)).to eql(2)
     end
     it 'no parameter is not given and a block given it should return the number of instances that meet the conditon' do
-      expect([1, 2, 4, 2].my_count{ |x| x%2==0}).to eql(3)
+      expect([1, 2, 4, 2].my_count(&:even?)).to eql(3)
     end
   end
-  let(:proc1) {  proc { |x| x**2 } }
+  let(:proc1) { proc { |x| x**2 } }
   describe 'test the my_map method' do
     it 'return enum if block is not given' do
-      expect([1,2,3,4].my_map.instance_of?(Enumerator)).to be true 
+      expect([1, 2, 3, 4].my_map.instance_of?(Enumerator)).to be true
     end
     it 'iterates over a given array and returns a new array with instances that meet the condition' do
-      expect([1,2,3,4].my_map { |i| i * i }).to eql( [1, 4, 9, 16]) 
+      expect([1, 2, 3, 4].my_map { |i| i * i }).to eql([1, 4, 9, 16])
     end
     it 'iterates over a given range and returns a new array with instances that meet the condition' do
-      expect((1..4).my_map { |i| i * i }).to eql( [1, 4, 9, 16]) 
+      expect((1..4).my_map { |i| i * i }).to eql([1, 4, 9, 16])
     end
     it 'iterates over a proc and returns an array that meets the condition in the proc' do
-      expect((1..4).my_map(proc1)).to eql( [1, 4, 9, 16]) 
+      expect((1..4).my_map(proc1)).to eql([1, 4, 9, 16])
     end
   end
   describe 'test the my_inject method' do
-    it 'if an initail number and a symbol are given without a block ,it returns the sum the intial after the symbol is applied 
+    it 'if an initail number and a symbol are given without a
+    block ,it returns the sum the intial after the symbol is applied
     on each and every instance in a range' do
-      expect((5..10).my_inject(2, :*)).to eql(302400) 
+      expect((5..10).my_inject(2, :*)).to eql(302_400)
     end
-    it 'when a block is given without an intial it will return the total sum of the condition applied on 
+    it 'when a block is given without an intial it will return the total sum of the condition applied on
     every intances in the range' do
-      expect((1..4).my_inject { |sum, n| sum + n }).to eql(10)  
+      expect((1..4).my_inject { |sum, n| sum + n }).to eql(10)
     end
-    it 'when a block is given with an intial it will return the total sum of the condition applied on 
+    it 'when a block is given with an intial it will return the total sum of the condition applied on
     every intances in the range starting from the inital' do
-      expect((1..4).my_inject(6) { |sum, n| sum + n }).to eql(16)  
+      expect((1..4).my_inject(6) { |sum, n| sum + n }).to eql(16)
     end
   end
 end
-
-
-
-# my_inject
-# puts (5..10).my_inject(1, :*) #=> 151200
-# puts (1..3).my_inject { |sum, n| sum + n } #=> 6
-# puts (1..3).my_inject(:+) #=> 6
-# puts (5..10).my_inject(1) { |product, n| product * n } #=> 151200
-# longest = %w[cat sheep bear].my_inject do |memo, word|
-#   memo.length > word.length ? memo : word
-# end
-# puts longest #=> "sheep"
-# multiply_els
-# puts multiply_els([2,4,5]) #=> 40
